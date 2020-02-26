@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Animated, Dimensions, Modal, PanResponder, Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {getInset} from 'react-native-safe-area-view';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 const WINDOW_WIDTH = Dimensions.get('window').width;
+const landScape = WINDOW_WIDTH > WINDOW_HEIGHT;
 const DRAG_DISMISS_THRESHOLD = 150;
-const STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -25 : 0);
+const STATUS_BAR_OFFSET = Platform.OS === 'android' ? getStatusBarHeight() : 0;
 const isIOS = Platform.OS === 'ios';
 
 const styles = StyleSheet.create({
@@ -25,7 +28,7 @@ const styles = StyleSheet.create({
   },
   header: {
     position: 'absolute',
-    top: 0,
+    top: getInset('top', landScape) + STATUS_BAR_OFFSET,
     left: 0,
     width: WINDOW_WIDTH,
     backgroundColor: 'transparent',
@@ -35,6 +38,7 @@ const styles = StyleSheet.create({
     color: 'white',
     lineHeight: 40,
     width: 40,
+    paddingLeft: 20,
     textAlign: 'center',
     shadowOffset: {
       width: 0,
@@ -220,33 +224,33 @@ export default class LightboxOverlay extends Component {
     const header = (<Animated.View style={[styles.header, lightboxOpacityStyle]}>{(renderHeader ?
       renderHeader(this.close) :
       (
-        <TouchableOpacity onPress={this.close}>
-          <Text style={styles.closeButton}>×</Text>
-        </TouchableOpacity>
-      )
+      <TouchableOpacity onPress={this.close}>
+      <Text style={styles.closeButton}>×</Text>
+    </TouchableOpacity>
+    )
     )}</Animated.View>);
     const content = (
       <Animated.View style={[openStyle, dragStyle]} {...handlers}>
-        {this.props.children}
-      </Animated.View>
-    );
+    {this.props.children}
+  </Animated.View>
+  );
 
     if (this.props.navigator) {
       return (
         <View>
-          {background}
-          {content}
-          {header}
-        </View>
-      );
+        {background}
+      {content}
+      {header}
+    </View>
+    );
     }
 
     return (
       <Modal visible={isOpen} transparent={true} onRequestClose={() => this.close()}>
-        {background}
-        {content}
-        {header}
-      </Modal>
-    );
+    {background}
+    {content}
+    {header}
+  </Modal>
+  );
   }
 }

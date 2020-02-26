@@ -30,6 +30,8 @@
   },
   "homepage": "https://github.com/oblador/react-native-lightbox",
   "dependencies": {
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "react-native-safe-area-view": "^0.14.7",
+    "react-native-status-bar-height": "^2.4.0"
   }
 }
