@@ -125,6 +125,7 @@ export default class Lightbox extends Component {
         ref={component => this._root = component}
         style={this.props.style}
         onLayout={() => {}}
+        onLongPress={() => this.props.onLongPress()}
       >
         <Animated.View style={{opacity: this.state.layoutOpacity}}>
           <TouchableHighlight
