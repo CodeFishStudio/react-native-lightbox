@@ -129,7 +129,7 @@ export default class Lightbox extends Component {
       >
         <Animated.View style={{opacity: this.state.layoutOpacity}}>
           <TouchableHighlight
-            underlayColor={this.props.underlayColor}
+            underlayColor={'#ffffff'}
             onPress={this.open}
             onLongPress={this.props.onLongPress}
           >
